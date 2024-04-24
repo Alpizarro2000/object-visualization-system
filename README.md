@@ -1,8 +1,9 @@
 # How to Run
-Clone the repo or download the zip.
-Open the folder in the terminal.
-Run `npm install`.
-Run `npm start`.
+
+- Clone the repo or download the zip.
+- Open the folder in the terminal.
+- Run `npm install`.
+- Run `npm start`.
 
 ### `npm run build`
 
