@@ -1,4 +1,3 @@
-// App.js
 import React, { useState } from "react";
 import { Entity } from "aframe-react";
 import ObjModel from "./ObjModel";
@@ -37,7 +36,7 @@ export function App() {
 
   return (
     <a-scene device-orientation-permission-ui="enabled: false">
-      <a-camera position="1 1 1" scale="10 10 10">
+      <a-camera>
         <Menu entities={entities} onSelect={handleSelect} />
       </a-camera>
       <a-entity environment="preset: forest; dressingAmount: 500"></a-entity>
@@ -45,7 +44,7 @@ export function App() {
       <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" scale="10 10 0" color="green" />
       <a-box position="10 2 3"></a-box>
       <a-sky color="lightblue"></a-sky>
-    </a-scene>
+    </a-scene>
   );
 }
 
