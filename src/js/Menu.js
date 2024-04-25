@@ -1,5 +1,6 @@
 // Menu.js
 import React from 'react';
+import 'aframe';
 
 const Menu = ({ entities, onSelect }) => {
   return (

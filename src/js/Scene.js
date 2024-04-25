@@ -1,9 +1,11 @@
+// Scene.js
 import React, { useState, useEffect } from "react";
+import 'aframe';
 import GetScene from './Api';
 import ReturnModel from './ReturnModel';
-import RenderEntities from './RenderEntities'; // Assuming you have a component to render A-Frame entities
+import RenderEntities from './RenderEntities';
 
-const ReturnScene = ({ scene_id }) => {
+const Scene = ({ scene_id }) => {
     const [contents, setContents] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -17,7 +19,7 @@ const ReturnScene = ({ scene_id }) => {
                     if (data === "") {
                         console.log("Nonexistent scene");
                     } else {
-                        // Map over data and call ReturnModel for each item
+                        // Map (run a process over each element in an array) over data and call ReturnModel for each item
                         const models = data.map(item => ReturnModel(item));
                         // Set the state contents with the mapped models
                         setContents(models);
@@ -40,4 +42,4 @@ const ReturnScene = ({ scene_id }) => {
     );
 }
 
-export default ReturnScene;
+export default Scene;

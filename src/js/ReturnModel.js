@@ -1,3 +1,6 @@
+// ReturnModel.js
+import 'aframe';
+
 export function ReturnModel(modelData) {
     return(
         <a-entity

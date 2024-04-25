@@ -3,6 +3,7 @@
 - Clone the repo or download the zip.
 - Open the folder in the terminal.
 - Run `npm install`.
+- Run `node .\src\js\Server.js`. 
 - Run `npm start`.
 
 ### `npm run build`

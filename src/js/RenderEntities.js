@@ -1,4 +1,6 @@
+// RenderEntities.js
 import React from 'react';
+import 'aframe';
 
 const RenderEntities = ({ entities }) => {
   // Map over the array of entities and generate <a-entity> elements for each object
