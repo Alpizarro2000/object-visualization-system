@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Entity } from "aframe-react";
 import ObjModel from "./ObjModel";
-import Menu from './Menu';
+import Menu from './Menu';//huhiuhih
 
 export function App() {
   const [selectedEntity, setSelectedEntity] = useState(null);
