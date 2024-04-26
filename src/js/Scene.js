@@ -1,7 +1,7 @@
 // Scene.js
 import React, { useState, useEffect } from "react";
 import 'aframe';
-import GetScene from './Api';
+import Api from './Api';
 import ReturnModel from './ReturnModel';
 import RenderEntities from './RenderEntities';
 
@@ -13,7 +13,7 @@ const Scene = ({ scene_id }) => {
         // Call GetScene and handle the response using async/await
         async function fetchData() {
             try {
-                const response = await GetScene(scene_id);
+                const response = await Api.GetScene(scene_id);
                 if (response.status === 200) {
                     const data = response.data;
                     if (data === "") {
@@ -38,7 +38,8 @@ const Scene = ({ scene_id }) => {
 
     // Return RenderEntities only after contents have been updated
     return (
-        dataLoaded && <RenderEntities entities={contents} />
+        dataLoaded && 
+        RenderEntities(contents)
     );
 }
 

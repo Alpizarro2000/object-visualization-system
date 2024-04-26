@@ -2,7 +2,7 @@
 import React from 'react';
 import 'aframe';
 
-const RenderEntities = ({ entities }) => {
+function RenderEntities(entities) {
   // Map over the array of entities and generate <a-entity> elements for each object
   const renderedEntities = entities.map((entity, index) => (
     <a-entity
@@ -17,9 +17,7 @@ const RenderEntities = ({ entities }) => {
 
   // Render the array of <a-entity> elements within an <a-scene>
   return (
-    <a-scene>
-      {renderedEntities}
-    </a-scene>
+    renderedEntities
   );
 };
 

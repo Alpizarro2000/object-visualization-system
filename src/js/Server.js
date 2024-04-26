@@ -44,4 +44,30 @@ app.get('/api/scenes/:id', function (req, res) {
     
 });
 
+app.get('/api/files', function (req, res) {
+   
+    // connect to your database
+    sql.connect(config, function (err) {
+    
+        if (err) console.log(err);
+
+        // create Request object
+        var request = new sql.Request();
+           
+        // query to the database and get the records
+        var statement = "exec uspReturnAllAvailableModels";
+        console.log(req.params.id)
+        console.log(statement);
+        request.query(statement, function (err, recordset) {
+            
+            if (err) console.log(err)
+
+            // send records as a response
+            res.send(recordset.recordset);
+            
+        });
+    });
+    
+});
+
 app.listen(2023, () => console.log("Listening on port "));

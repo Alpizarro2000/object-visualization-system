@@ -1,4 +1,4 @@
-// Api.js
+// GetScene.js
 import axios from "axios";
 
 const GetScene = async (scene_id) => {
@@ -10,4 +10,13 @@ const GetScene = async (scene_id) => {
     return response;
 };
 
-export default GetScene;
+const GetModels = async () => {
+
+    const response = await axios.get('http://localhost:2023/api/files/', {
+    });
+    
+    //console.log(response)
+    return response;
+};
+
+export default {GetScene, GetModels};
