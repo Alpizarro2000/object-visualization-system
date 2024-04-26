@@ -1,7 +1,8 @@
 // AvailableModelsMenu.js
 import React, { useState, useEffect } from "react";
 import 'aframe';
-import Api from './Api';
+import ApiTools from './Api';
+import '../css/gui-tool-styles.css';
 
 const AvailableModelsMenu = () => {
     const [buttons, setButtons] = useState('');
@@ -11,7 +12,7 @@ const AvailableModelsMenu = () => {
         // Call GetScene and handle the response using async/await
         async function fetchData() {
             try {
-                const response = await Api.GetModels();
+                const response = await ApiTools.GetModels();
                 if (response.status === 200) {
                     const data = response.data;
                     if (data === "") {
@@ -19,7 +20,7 @@ const AvailableModelsMenu = () => {
                     } else {
                         // Map over data and create buttons directly
                         const buttons = data.map((item, index) => (
-                            <button key={`SpawnFile${item.file_id}`} style={{ position: 'fixed', top: `${20 + index * 40}px`, left: '20px', zIndex: 1000, padding: '10px', fontSize: '16px' }} onClick={() => SpawnModel(item)}>
+                            <button id={`model${item.file_id}`}key={`SpawnFile${item.file_id}`} onClick={() => SpawnModel(item)}>
                                 Spawn {item.file_name}
                             </button>
                         ));
@@ -58,7 +59,7 @@ const AvailableModelsMenu = () => {
     // Return RenderEntities only after contents have been updated
     return (
         dataLoaded && 
-        <div>{buttons}</div>
+        <div className="spawner__menu">{buttons}</div>
     );
 }
 

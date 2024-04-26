@@ -1,7 +1,13 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { App } from "./js/App";
 import 'aframe';
 
 const element = document.getElementById('root');
-ReactDOM.render(<App/>, element);
+const root = createRoot(element);
+
+root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+);
