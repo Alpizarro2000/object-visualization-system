@@ -2,17 +2,18 @@
 import React from "react";
 import 'aframe';
 import AvailableModelsMenu from './AvailableModelsMenu';
-import Scene from "./Scene"
+import ScenesMenu from "./ScenesMenu";
 
 export function App() {
   return (
     <a-scene vr-mode-ui="enabled: true">
-      <a-camera position="0 1.6 0" scale="10 10 10">
+      <div class="scene__title">Untitled</div>
+      <a-camera position="0 1.6 0">
       </a-camera>
       <AvailableModelsMenu/>
+      <ScenesMenu/>
       <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" scale="10 10 0" color="green" />
       <a-sky color="lightblue"></a-sky>
-      <Scene scene_id={2}/>
     </a-scene>
   );
 }

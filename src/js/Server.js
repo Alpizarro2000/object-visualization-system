@@ -18,6 +18,31 @@ var config = {
     trustServerCertificate: true,
 };
 
+app.get('/api/scenes', function (req, res) {
+   
+    // connect to your database
+    sql.connect(config, function (err) {
+    
+        if (err) console.log(err);
+
+        // create Request object
+        var request = new sql.Request();
+           
+        // query to the database and get the records
+        var statement = "exec uspReturnAllSceneInfo";
+        console.log(statement);
+        request.query(statement, function (err, recordset) {
+            
+            if (err) console.log(err)
+
+            // send records as a response
+            res.send(recordset.recordset);
+            
+        });
+    });
+    
+});
+
 app.get('/api/scenes/:id', function (req, res) {
    
     // connect to your database
@@ -30,7 +55,6 @@ app.get('/api/scenes/:id', function (req, res) {
            
         // query to the database and get the records
         var statement = "exec uspReturnLatestSceneContents " + req.params.id;
-        console.log(req.params.id)
         console.log(statement);
         request.query(statement, function (err, recordset) {
             
@@ -56,7 +80,6 @@ app.get('/api/files', function (req, res) {
            
         // query to the database and get the records
         var statement = "exec uspReturnAllAvailableModels";
-        console.log(req.params.id)
         console.log(statement);
         request.query(statement, function (err, recordset) {
             

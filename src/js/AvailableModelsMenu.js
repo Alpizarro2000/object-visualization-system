@@ -12,15 +12,15 @@ const AvailableModelsMenu = () => {
         // Call GetScene and handle the response using async/await
         async function fetchData() {
             try {
-                const response = await ApiTools.GetModels();
+                const response = await ApiTools.GetFiles();
                 if (response.status === 200) {
                     const data = response.data;
                     if (data === "") {
                         console.log("No models found");
                     } else {
                         // Map over data and create buttons directly
-                        const buttons = data.map((item, index) => (
-                            <button id={`model${item.file_id}`}key={`SpawnFile${item.file_id}`} onClick={() => SpawnModel(item)}>
+                        const buttons = data.map((item) => (
+                            <button id={`model${item.file_id}`} key={`SpawnFile${item.file_id}`} onClick={() => SpawnModel(item)}>
                                 Spawn {item.file_name}
                             </button>
                         ));
@@ -56,10 +56,22 @@ const AvailableModelsMenu = () => {
         }
     }
 
+    const enterVR = () => {
+        const sceneEl = document.querySelector('a-scene');
+        if (sceneEl && sceneEl.enterVR) {
+          sceneEl.enterVR();
+        }
+    };    
+
     // Return RenderEntities only after contents have been updated
     return (
         dataLoaded && 
-        <div className="spawner__menu">{buttons}</div>
+        <>
+        <div grabbable="true" className="spawner__menu">{buttons}</div>
+        <button style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 1000, padding: '10px', fontSize: '16px' }} onClick={enterVR}>
+        Enter VR
+        </button>
+        </>
     );
 }
 

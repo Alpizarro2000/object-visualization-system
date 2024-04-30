@@ -1,0 +1,24 @@
+// tasks.json
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run server",
+            "type": "shell",
+            "command": "node ./src/js/server.js"
+        },
+        {
+            "label": "Run dev website",
+            "type": "shell",
+            "command": "npm start"
+        },
+        {
+            "label": "Set Up React site",
+            "dependsOn":[
+                "Run server",
+                "Run dev website"
+            ]
+        }
+    ]
+  }
+  

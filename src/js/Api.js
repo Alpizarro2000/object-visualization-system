@@ -1,7 +1,7 @@
 // GetScene.js
 import axios from "axios";
 
-const GetScene = async (scene_id) => {
+const GetModels = async (scene_id) => {
 
     const response = await axios.get('http://localhost:2023/api/scenes/' + scene_id, {
     });
@@ -10,7 +10,7 @@ const GetScene = async (scene_id) => {
     return response;
 };
 
-const GetModels = async () => {
+const GetFiles = async () => {
 
     const response = await axios.get('http://localhost:2023/api/files/', {
     });
@@ -19,6 +19,15 @@ const GetModels = async () => {
     return response;
 };
 
-const ApiTools = {GetScene, GetModels};
+const GetScenes = async () => {
+
+    const response = await axios.get('http://localhost:2023/api/scenes/', {
+    });
+    
+    //console.log(response)
+    return response;
+};
+
+const ApiTools = {GetModels, GetFiles, GetScenes};
 
 export default ApiTools;
