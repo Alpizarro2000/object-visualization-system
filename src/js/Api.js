@@ -28,6 +28,6 @@ const GetScenes = async () => {
     return response;
 };
 
-const ApiTools = {GetScene, GetModels, GetScenes};
+const ApiTools = {GetModels, GetFiles, GetScenes};
 
 export default ApiTools;

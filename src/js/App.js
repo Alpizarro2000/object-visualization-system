@@ -3,7 +3,6 @@ import React from "react";
 import 'aframe';
 import AvailableModelsMenu from './AvailableModelsMenu';
 import ScenesMenu from "./ScenesMenu";
-import Scene from "./Scene"
 
 export function App() {
   return (

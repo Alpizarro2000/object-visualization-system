@@ -11,7 +11,7 @@ const SceneModels = ({ scene_id }) => {
         // Call GetScene and handle the response using async/await
         async function fetchData() {
             try {
-                const response = await ApiTools.GetScene(scene_id);
+                const response = await ApiTools.GetModels(scene_id);
                 if (response.status === 200) {
                     const data = response.data;
                     if (data === "") {
