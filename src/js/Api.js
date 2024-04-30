@@ -19,6 +19,15 @@ const GetModels = async () => {
     return response;
 };
 
-const ApiTools = {GetScene, GetModels};
+const GetScenes = async () => {
+
+    const response = await axios.get('http://localhost:2023/api/scenes/', {
+    });
+    
+    //console.log(response)
+    return response;
+};
+
+const ApiTools = {GetScene, GetModels, GetScenes};
 
 export default ApiTools;
