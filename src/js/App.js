@@ -1,10 +1,19 @@
 // App.js
 import React from "react";
 import 'aframe';
+import KeyboardShortcut  from "./Shortcuts";
 import AvailableModelsMenu from './AvailableModelsMenu';
 import ScenesMenu from "./ScenesMenu";
 
 export function App() {
+  const handleUndo = () => {
+    console.log('Undo action'); // Replace with your undo logic
+  };
+
+  const handleSave = () => {
+    console.log('Save action'); // Replace with your save logic
+  };
+
   return (
     <a-scene vr-mode-ui="enabled: true">
       <div class="scene__title">Untitled</div>
@@ -12,6 +21,7 @@ export function App() {
       </a-camera>
       <AvailableModelsMenu/>
       <ScenesMenu/>
+      <KeyboardShortcut onUndo={handleUndo} onSave={handleSave} />
       <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" scale="10 10 0" color="green" />
       <a-sky color="lightblue"></a-sky>
     </a-scene>
