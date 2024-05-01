@@ -1,5 +1,7 @@
-import { useState, useEffect, React } from "react";
+// ScenesMenu.js
+import { useState, useEffect } from "react";
 import 'aframe';
+import DatesMenu from './DatesMenu';
 import SceneModels from "./SceneModels";
 import ApiTools from './Api';
 import '../css/gui-tool-styles.css';
@@ -8,59 +10,52 @@ const ScenesMenu = () => {
   const [contents, setContents] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [selectedScene, setSelectedScene] = useState(null); // State to store the selected scene ID
+  const [selectedDate, setSelectedDate] = useState('latest');
 
   useEffect(() => {
-    // Call GetScene and handle the response using async/await
     async function fetchData() {
-      let shouldContinue = true;
-
       try {
         const response = await ApiTools.GetScenes();
         if (response.status === 200) {
           const data = response.data;
-          if (data === "") {
+          if (data.length === 0) {
             console.log("No registered scenes");
           } else {
-            // Map over data and create buttons for each scene
-            const scenes = data.map(item => (
-              <button className="sceneGetter" key={`SpawnScene${item.scene_id}`} onClick={() => SetScene(item)}>
-                Scene {item.scene_name}
-              </button>
-            ));
-            // Set the state contents with the mapped buttons
-            setContents(scenes);
-            setDataLoaded(true); // Set dataLoaded to true after contents have been updated
+            setContents(data);
+            setDataLoaded(true);
           }
         } else {
-          console.log("response.status = " + response.status);
+          console.log("Error fetching scenes: " + response.statusText);
         }
       } catch (error) {
-        console.error("Error fetching scene:", error);
-      } finally {
-        if (shouldContinue) {
-          fetchData();
-        }
+        console.error("Error fetching scenes:", error);
       }
     }
-
     fetchData();
-  }, []); // Call fetchData once on page load
+  }, []);
 
-  // Function to set the selected scene
-  function SetScene(scene) {
-    // Remove existing scene before setting the new one
-    setSelectedScene(null); // Clear the selected scene first
-    setTimeout(() => { // Timeout to ensure the selected scene is cleared before setting the new one
-      console.log(scene.scene_id)
-      setSelectedScene(scene.scene_id); // Set the new selected scene
-    }, 0);
+  function handleSceneSelection(sceneId) {
+    setSelectedScene(sceneId);
+    setSelectedDate('latest');
+  }
+  
+
+  function handleSelectDate(date) {
+    setSelectedDate(date);
   }
 
   return (
     dataLoaded && 
     <>
-      <div className="scenes__menu">{contents}</div>
-      {selectedScene && <SceneModels key={selectedScene} scene_id={selectedScene} />} {/* Render SceneModels with the selected scene ID */}
+      <div className="scenes__menu">
+        {contents.map(item => (
+          <button key={item.scene_id} onClick={() => handleSceneSelection(item.scene_id)}>
+            Scene {item.scene_name}
+          </button>
+        ))}
+      </div>
+      {selectedScene && <SceneModels key={selectedScene} sceneId={selectedScene} sceneDate={selectedDate} />}
+      {selectedScene && selectedDate && dataLoaded && <DatesMenu key={selectedDate} sceneId={selectedScene} onSelectDate={handleSelectDate} />}
     </>
   );
 }

@@ -64,6 +64,28 @@ div.scenes__menu {
     border-radius: 10px;
 }
 
+div.dates__menu {
+    background-color: rgb(27, 27, 27);
+
+    height: 300px;
+    width: 250px;
+
+    display: flex;
+    flex-direction: column;
+
+    position: fixed;
+    top: 30px;
+    right: 10px;
+    z-index: 1000;
+    overflow: auto;
+
+    border-color: rgb(27, 27, 27);
+    border-style: solid;
+    padding-right: 8px;
+    border-width: 10px;
+    border-radius: 10px;
+}
+
 button {
     font-size: 16px;
 

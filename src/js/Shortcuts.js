@@ -1,5 +1,5 @@
 // Shortcuts.js
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 const KeyboardShortcut = ({ onUndo, onSave }) => {
   useEffect(() => {

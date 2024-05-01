@@ -43,7 +43,49 @@ app.get('/api/scenes', function (req, res) {
     
 });
 
-app.get('/api/scenes/:id', function (req, res) {
+app.get('/api/scenes/:scene_id/:scene_date', function (req, res) {
+    const sceneId = req.params.scene_id;
+    const sceneDate = req.params.scene_date;
+
+    // Check if sceneId is null or undefined
+    if (!sceneId) {
+        return res.status(400).send('Scene ID is required');
+    }
+
+    // connect to your database
+    sql.connect(config, function (err) {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        // create Request object
+        var request = new sql.Request();
+           
+        // query to the database and get the records
+        var statement = "exec uspReturnSceneContents " + sceneId + ", '" + sceneDate + "'";
+        console.log(statement);
+        
+        request.query(statement, function (err, recordset) {
+            if (err) {
+                console.log(err);
+                return res.status(500).send('Error executing database query');
+            }
+
+            // Check if recordset is undefined or null
+            if (!recordset) {
+                return res.status(404).send('Scene not found');
+            }
+
+            // send records as a response
+            res.send(recordset.recordset);
+        });
+    });
+});
+
+
+
+app.get('/api/dates/:scene_id', function (req, res) {
    
     // connect to your database
     sql.connect(config, function (err) {
@@ -54,7 +96,7 @@ app.get('/api/scenes/:id', function (req, res) {
         var request = new sql.Request();
            
         // query to the database and get the records
-        var statement = "exec uspReturnLatestSceneContents " + req.params.id;
+        var statement = "exec uspReturnAllVersionDates " + req.params.scene_id;
         console.log(statement);
         request.query(statement, function (err, recordset) {
             

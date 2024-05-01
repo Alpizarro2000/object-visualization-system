@@ -1,17 +1,19 @@
-import { useState, useEffect } from "react";
+// SceneModels.js
+import { useState, useEffect, useRef } from "react";
 import 'aframe';
 import ApiTools from './Api';
 import ReturnModel from './ReturnModel';
-import RenderEntities from './RenderEntities';
 
-const SceneModels = ({ scene_id }) => {
+const SceneModels = ({ sceneId, sceneDate }) => { // Changed prop name to sceneDate
     const [contents, setContents] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
+    const entityRefs = useRef([]); // Create a ref for the a-entity elements. We'll be using this to recover and modify entity properties
+
     useEffect(() => {
         // Call GetScene and handle the response using async/await
         async function fetchData() {
             try {
-                const response = await ApiTools.GetModels(scene_id);
+                const response = await ApiTools.GetModels(sceneId, sceneDate); // Use sceneDate instead of scene_date
                 if (response.status === 200) {
                     const data = response.data;
                     if (data === "") {
@@ -20,7 +22,6 @@ const SceneModels = ({ scene_id }) => {
                         // Map over data and call ReturnModel for each item
                         const models = data.map(item => ReturnModel(item));
                         // Set the state contents with the mapped models
-                        console.log(models);
                         setContents(models);
                         setDataLoaded(true); // Set dataLoaded to true after contents have been updated
                     }
@@ -33,11 +34,11 @@ const SceneModels = ({ scene_id }) => {
         }
 
         fetchData();
-    }, [scene_id]); // Call fetchData whenever scene_id changes
+    }, [sceneId, sceneDate]); // Call fetchData whenever sceneId or sceneDate changes
 
     return (
         dataLoaded && 
-        RenderEntities(contents)
+        contents // Pass entityRefs to RenderEntities
     );
 }
 
