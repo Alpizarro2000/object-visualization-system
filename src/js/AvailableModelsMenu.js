@@ -20,7 +20,7 @@ const AvailableModelsMenu = () => {
                     } else {
                         // Map over data and create buttons directly
                         const buttons = data.map((item) => (
-                            <button id={`model${item.file_id}`} key={`SpawnFile${item.file_id}`} onClick={() => SpawnModel(item)}>
+                            <button id={`modelSpawn${item.file_id}`} key={`SpawnFile${item.file_id}`} onClick={() => SpawnModel(item)}>
                                 Spawn {item.file_name}
                             </button>
                         ));
@@ -47,6 +47,7 @@ const AvailableModelsMenu = () => {
             const position = player.getAttribute('position');
 
             const entity = document.createElement('a-entity');
+            entity.setAttribute('class', `nModel`);
             entity.setAttribute('gltf-model', `url(${modelData.file_url})`);
             entity.setAttribute('position', position);
             entity.setAttribute('scale', "0.01 0.01 0.01");

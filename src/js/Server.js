@@ -135,4 +135,76 @@ app.get('/api/files', function (req, res) {
     
 });
 
+app.post('/api/UploadNewModelChanges', function (req, res) {
+    // Extract parameters from request body
+    const { model_instance_id, file_id, date_and_time, position, scale, rotation } = req.body;
+
+    // Connect to the database
+    sql.connect(config, function (err) {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        // Create Request object
+        const request = new sql.Request();
+
+        // Set input parameters for the stored procedure
+        request.input('p_model_instance_id', sql.Int, model_instance_id);
+        request.input('p_file_id', sql.NVarChar(255), file_id);
+        request.input('p_date_and_time', sql.DateTime, date_and_time);
+        request.input('p_position', sql.NVarChar(255), position);
+        request.input('p_scale', sql.NVarChar(255), scale);
+        request.input('p_rotation', sql.NVarChar(255), rotation);
+
+        // Execute the stored procedure
+        request.execute('uspInsertOrUpdateContentChanges', function (err) {
+            if (err) {
+                console.log(err);
+                return res.status(500).send('Error executing database query');
+            }
+
+            // Return success response
+            res.send('Content changes inserted or updated successfully');
+        });
+    });
+});
+
+app.post('/api/UploadNewModelChanges', function (req, res) {
+    // Extract parameters from request body
+    const { scene_id, file_id, date_and_time, position, scale, rotation } = req.body;
+
+    // Connect to the database
+    sql.connect(config, function (err) {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        // Create Request object
+        const request = new sql.Request();
+
+        // Set input parameters for the stored procedure
+        request.input('p_scene_id', sql.Int, scene_id);
+        request.input('p_file_id', sql.NVarChar(255), file_id);
+        request.input('p_date_and_time', sql.DateTime, date_and_time);
+        request.input('p_position', sql.NVarChar(255), position);
+        request.input('p_scale', sql.NVarChar(255), scale);
+        request.input('p_rotation', sql.NVarChar(255), rotation);
+
+        // Execute the stored procedure
+        request.execute('uspInsertNewModelInstanceAndChange', function (err, recordset) {
+            if (err) {
+                console.log(err);
+                return res.status(500).send('Error executing database query');
+            }
+
+            // Return the response with the new model_instance_id
+            const new_model_instance_id = recordset.output.new_model_instance_id;
+            res.send({ new_model_instance_id: new_model_instance_id });
+        });
+    });
+});
+
+
 app.listen(2023, () => console.log("Listening on port "));

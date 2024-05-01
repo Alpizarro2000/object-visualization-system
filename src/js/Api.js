@@ -33,6 +33,38 @@ const GetDates = async (scene_id) => {
     return response;
 };
 
-const ApiTools = {GetModels, GetFiles, GetScenes, GetDates};
+const UploadExistingModelChanges = async (model_instance_id, file_id, date_and_time, position, scale, rotation) => {
+    try {
+        // Make a POST request to the server
+        const response = await axios.post('http://localhost:2023/api/UploadExistingModelChanges', {
+            model_instance_id: model_instance_id,
+            file_id: file_id,
+            date_and_time: date_and_time,
+            position: position,
+            scale: scale,
+            rotation: rotation
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error inserting or updating content changes:', error);
+        throw error; // Rethrow the error for handling by the caller
+    }
+};
+
+
+const UploadNewModelChanges = async (scene_id, file_id, date_and_time, position, scale, rotation) => {
+    const response = await axios.post('http://localhost:2023/api/UploadNewModelChanges', {
+        scene_id: scene_id,
+        file_id: file_id,
+        date_and_time: date_and_time,
+        position: position,
+        scale: scale,
+        rotation: rotation
+    });
+    return response;
+};
+
+
+const ApiTools = { GetModels, GetFiles, GetScenes, GetDates, UploadExistingModelChanges, UploadNewModelChanges };
 
 export default ApiTools;
