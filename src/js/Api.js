@@ -64,7 +64,16 @@ const UploadNewModelChanges = async (scene_id, file_id, date_and_time, position,
     return response;
 };
 
+const CreateScene = async (scene_name) => {
+    try {
+        const response = await axios.post(`http://localhost:2023/api/CreateScene/${scene_name}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating scene:', error);
+        throw error;
+    }
+};
 
-const ApiTools = { GetModels, GetFiles, GetScenes, GetDates, UploadExistingModelChanges, UploadNewModelChanges };
+const ApiTools = { GetModels, GetFiles, GetScenes, GetDates, UploadExistingModelChanges, UploadNewModelChanges, CreateScene };
 
 export default ApiTools;

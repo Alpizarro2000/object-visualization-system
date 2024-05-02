@@ -206,5 +206,40 @@ app.post('/api/UploadNewModelChanges', function (req, res) {
     });
 });
 
+app.post('/api/CreateScene/:scene_name', function (req, res) {
+    // Extract the scene name from the URL parameters
+    const scene_name = req.params.scene_name;
+
+    // Connect to the database
+    sql.connect(config, function (err) {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        // Create Request object
+        const request = new sql.Request();
+
+        // Set input parameter for the stored procedure
+        request.input('scene_name', sql.NVarChar(255), scene_name);
+
+        // Execute the stored procedure
+        request.execute('uspCreateScene', function (err, recordset) {
+            if (err) {
+                console.log(err);
+                return res.status(500).send('Error executing database query');
+            }
+
+            // Check if the procedure returned a message
+            if (recordset && recordset.recordset && recordset.recordset[0] && recordset.recordset[0].Message) {
+                const message = recordset.recordset[0].Message;
+                return res.send(message);
+            }
+
+            // Return success message
+            res.send('Scene created successfully');
+        });
+    });
+});
 
 app.listen(2023, () => console.log("Listening on port "));

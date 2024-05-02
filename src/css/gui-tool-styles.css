@@ -20,6 +20,65 @@ div.scenes__menu {
     border-radius: 10px;
 }
 
+div.popup {
+    background-color: rgb(27, 27, 27);
+
+    height: 150px;
+    width: 300px;
+
+    display: flex;
+    flex-direction: column;
+
+    position: fixed;
+    top: 400px;
+    left: 400px;
+    z-index: 1000;
+    overflow: auto;
+
+    border-color: rgb(27, 27, 27);
+    border-style: solid;
+    padding-right: 8px;
+    border-width: 10px;
+    border-radius: 10px;
+}
+
+div.popup p {
+    margin: 0px;
+}
+
+div.popup__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+div.popup__content h2 {
+    margin: 10px auto;    
+    color: white;
+}
+
+div.popup__content button {
+    padding: 10px 15px;
+}
+
+div.popup__content label {
+    color: white;
+}
+
+.errorMessage  {
+    color: red;
+}
+
+.successMessage {
+    color: greenyellow;
+}
+
+div.popup__content.popup__popup__buttons_and_form {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+}
+
 div.spawner__menu {
     background-color: rgb(27, 27, 27);
 
@@ -42,27 +101,6 @@ div.spawner__menu {
     border-radius: 10px;
 }
 
-div.scenes__menu {
-    background-color: rgb(27, 27, 27);
-
-    height: 300px;
-    width: 250px;
-
-    display: flex;
-    flex-direction: column;
-
-    position: fixed;
-    top: 400px;
-    left: 10px;
-    z-index: 1000;
-    overflow: auto;
-
-    border-color: rgb(27, 27, 27);
-    border-style: solid;
-    padding-right: 8px;
-    border-width: 10px;
-    border-radius: 10px;
-}
 
 div.dates__menu {
     background-color: rgb(27, 27, 27);
