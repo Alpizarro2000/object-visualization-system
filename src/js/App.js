@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useRef , useEffect} from "react";
 import 'aframe';
 import KeyboardShortcut from "./Shortcuts";
 import AvailableModelsMenu from './AvailableModelsMenu';
@@ -7,6 +7,8 @@ import ApiTools from './Api'; // Import axios functions from GetScene.js
 
 export function App() {
   const [selectedSceneId, setSelectedSceneId] = useState(null); // State to store the selected scene ID
+  const sceneRef = useRef(null);
+
 
   const handleUndo = () => {
     console.log('Undo action'); // Replace with your undo logic
@@ -58,8 +60,33 @@ export function App() {
     }
   };
 
+  useEffect(() => {
+    const sceneEl = sceneRef.current;
+    if (sceneEl) {
+      sceneEl.addEventListener('loaded', () => {
+        const enterVRButton = document.createElement('button');
+        enterVRButton.textContent = 'Enter VR';
+        enterVRButton.style.position = 'fixed';
+        enterVRButton.style.bottom = '20px';
+        enterVRButton.style.right = '20px';
+        enterVRButton.style.padding = '12px 24px';
+        enterVRButton.style.fontSize = '16px';
+        enterVRButton.style.color = 'white';
+        enterVRButton.style.background = 'rgba(0,0,0,0.8)';
+        enterVRButton.style.border = 'none';
+        enterVRButton.style.borderRadius = '4px';
+        enterVRButton.style.cursor = 'pointer';
+        enterVRButton.addEventListener('click', () => {
+          sceneEl.enterVR();
+        });
+
+        document.body.appendChild(enterVRButton);
+      });
+    }
+  }, []);
+
   return (
-    <a-scene vr-mode-ui="enabled: true">
+    <a-scene ref={sceneRef}>
       <div className="scene__title">Untitled</div>
       <a-camera position="0 1.6 0" />
       <AvailableModelsMenu />

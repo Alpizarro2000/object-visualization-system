@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect , useRef } from "react";
 import 'aframe';
 import DatesMenu from './DatesMenu';
 import SceneModels from "./SceneModels";
@@ -33,6 +33,7 @@ const ScenesMenu = ({ onSceneSelection }) => { // Receive onSceneSelection as a 
         console.error("Error fetching scenes:", error);
       }
     }
+
     fetchData();
   }, []);
 

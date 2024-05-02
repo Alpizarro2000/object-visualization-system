@@ -55,23 +55,13 @@ const AvailableModelsMenu = () => {
 
             sceneEl.appendChild(entity);
         }
-    }
-
-    const enterVR = () => {
-        const sceneEl = document.querySelector('a-scene');
-        if (sceneEl && sceneEl.enterVR) {
-          sceneEl.enterVR();
-        }
-    };    
+    } 
 
     // Return RenderEntities only after contents have been updated
     return (
         dataLoaded && 
         <>
         <div grabbable="true" className="spawner__menu">{buttons}</div>
-        <button style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 1000, padding: '10px', fontSize: '16px' }} onClick={enterVR}>
-        Enter VR
-        </button>
         </>
     );
 }
