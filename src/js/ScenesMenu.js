@@ -5,7 +5,7 @@ import SceneModels from "./SceneModels";
 import ApiTools from './Api';
 import '../css/gui-tool-styles.css';
 
-const ScenesMenu = () => {
+const ScenesMenu = ({ onSceneSelection }) => { // Receive onSceneSelection as a prop
   const [contents, setContents] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [selectedScene, setSelectedScene] = useState(null); // State to store the selected scene ID
@@ -39,6 +39,8 @@ const ScenesMenu = () => {
   function handleSceneSelection(sceneId) {
     setSelectedScene(sceneId);
     setSelectedDate('latest');
+    // Call the onSceneSelection callback with the selected scene ID
+    onSceneSelection(sceneId);
   }
   
   function handleSelectDate(date) {

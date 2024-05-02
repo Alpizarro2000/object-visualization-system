@@ -33,12 +33,11 @@ const GetDates = async (scene_id) => {
     return response;
 };
 
-const UploadExistingModelChanges = async (model_instance_id, file_id, date_and_time, position, scale, rotation) => {
+const UploadExistingModelChanges = async (model_instance_id, date_and_time, position, scale, rotation) => {
     try {
         // Make a POST request to the server
         const response = await axios.post('http://localhost:2023/api/UploadExistingModelChanges', {
             model_instance_id: model_instance_id,
-            file_id: file_id,
             date_and_time: date_and_time,
             position: position,
             scale: scale,
@@ -52,10 +51,11 @@ const UploadExistingModelChanges = async (model_instance_id, file_id, date_and_t
 };
 
 
-const UploadNewModelChanges = async (scene_id, file_id, date_and_time, position, scale, rotation) => {
+
+const UploadNewModelChanges = async (scene_id, file_modified_url, date_and_time, position, scale, rotation) => {
     const response = await axios.post('http://localhost:2023/api/UploadNewModelChanges', {
         scene_id: scene_id,
-        file_id: file_id,
+        file_modified_url: file_modified_url,
         date_and_time: date_and_time,
         position: position,
         scale: scale,
@@ -63,6 +63,7 @@ const UploadNewModelChanges = async (scene_id, file_id, date_and_time, position,
     });
     return response;
 };
+
 
 const CreateScene = async (scene_name) => {
     try {
