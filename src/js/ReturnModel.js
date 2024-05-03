@@ -6,7 +6,7 @@ export function ReturnModel(modelData) {
         <a-entity
             key={modelData.model_instance_id}
             id={modelData.model_instance_id}
-            gltf-model={"url(" + modelData.file_url + ")"}
+            gltf-model={modelData.file_url}
             position={modelData.position}
             scale={modelData.scale}
             material="color: white; shader: flat"

@@ -1,7 +1,7 @@
+// App.js
 import React, { useState , useRef , useEffect} from "react";
 import 'aframe';
 import KeyboardShortcut from "./Shortcuts";
-import AvailableModelsMenu from './AvailableModelsMenu';
 import ScenesMenu from "./ScenesMenu";
 import ApiTools from './Api'; // Import axios functions from GetScene.js
 
@@ -22,6 +22,7 @@ export function App() {
       const entityClass = entity.getAttribute('class');
   
       if (entityId) {
+        const fileModifiedUrl = entity.getAttribute('gltf-model'); // Assuming 'gltf-model' attribute contains the modified file URL
         const position = entity.getAttribute('position');
         const scale = entity.getAttribute('scale');
         const rotation = entity.getAttribute('rotation');
@@ -30,8 +31,7 @@ export function App() {
         const correctScale = `${scale['x']} ${scale['y']} ${scale['z']}`
         const correctRotation = `${rotation['x']} ${rotation['y']} ${rotation['z']}`
 
-        console.log(position);
-        await ApiTools.UploadExistingModelChanges(entityId, dateAndTime, correctPosition, correctScale, correctRotation ); // Pass dateAndTime to UploadExistingModelChanges
+        await ApiTools.UploadExistingModelChanges(entityId, fileModifiedUrl, dateAndTime, correctPosition, correctScale, correctRotation ); // Pass dateAndTime to UploadExistingModelChanges
       } else if (entityClass && entityClass.includes('nModel')) {
         if (!selectedSceneId) {
           console.error("No scene selected for the new model instance.");
@@ -82,19 +82,22 @@ export function App() {
 
         document.body.appendChild(enterVRButton);
       });
-    }
-  }, []);
+    }
+  }, []);
 
   return (
-    <a-scene ref={sceneRef}>
-      <div className="scene__title">Untitled</div>
+    <>
+    <a-scene vr-mode-ui="enabled: true">
+      <a-light type="ambient" color="#888"></a-light>
+      <a-light type="directional" color="#fff" intensity="0.5" position="-1 1 -1"></a-light>
       <a-camera position="0 1.6 0" />
-      <AvailableModelsMenu />
+      <div className="scene__title">Untitled</div>
       <ScenesMenu onSceneSelection={setSelectedSceneId} /> {/* Pass setSelectedSceneId to ScenesMenu */}
       <KeyboardShortcut onUndo={handleUndo} onSave={handleSave} />
       <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" scale="10 10 0" color="green" />
       <a-sky color="lightblue" />
     </a-scene>
+    </>
   );
 }
 

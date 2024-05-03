@@ -1,45 +1,39 @@
-div.scenes__menu {
+div.menu, div.popup {
     background-color: rgb(27, 27, 27);
 
+    position: fixed;
+    z-index: 1000;
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    border-color: rgb(27, 27, 27);
+    border-style: solid;
+    padding-right: 8px;
+    border-width: 10px;
+    border-radius: 10px;    
+}
+
+div.scenes__menu {
     height: 300px;
     width: 250px;
 
-    display: flex;
-    flex-direction: column;
-
-    position: fixed;
     top: 400px;
     left: 10px;
-    z-index: 1000;
-    overflow: auto;
-
-    border-color: rgb(27, 27, 27);
-    border-style: solid;
-    padding-right: 8px;
-    border-width: 10px;
-    border-radius: 10px;
 }
 
 div.popup {
-    background-color: rgb(27, 27, 27);
-
     height: 150px;
     width: 300px;
 
-    display: flex;
-    flex-direction: column;
-
-    position: fixed;
     top: 400px;
     left: 400px;
-    z-index: 1000;
-    overflow: auto;
+}
 
-    border-color: rgb(27, 27, 27);
-    border-style: solid;
-    padding-right: 8px;
-    border-width: 10px;
-    border-radius: 10px;
+.THE__button {
+    color: white;
+    background-color: rgb(63, 63, 63);
 }
 
 div.popup p {
@@ -80,51 +74,24 @@ div.popup__content.popup__popup__buttons_and_form {
 }
 
 div.spawner__menu {
-    background-color: rgb(27, 27, 27);
-
     height: 300px;
     width: 250px;
 
-    display: flex;
-    flex-direction: column;
-
-    position: fixed;
     top: 30px;
     left: 10px;
-    z-index: 1000;
-    overflow: auto;
-
-    border-color: rgb(27, 27, 27);
-    border-style: solid;
-    padding-right: 8px;
-    border-width: 10px;
-    border-radius: 10px;
 }
 
 
 div.dates__menu {
-    background-color: rgb(27, 27, 27);
-
     height: 300px;
     width: 250px;
 
-    display: flex;
-    flex-direction: column;
-
-    position: fixed;
     top: 30px;
     right: 10px;
-    z-index: 1000;
-    overflow: auto;
-
-    border-color: rgb(27, 27, 27);
-    border-style: solid;
-    padding-right: 8px;
-    border-width: 10px;
-    border-radius: 10px;
 }
 
 button {
+    background-color: white;
     font-size: 16px;
 
     margin: 5px;
@@ -135,4 +102,12 @@ button {
     border-radius: 10px;
 
     cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(168, 168, 168);
+}
+
+button:active {
+    background-color: rgb(226, 226, 226);
 }

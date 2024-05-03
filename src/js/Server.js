@@ -137,7 +137,7 @@ app.get('/api/files', function (req, res) {
 
 app.post('/api/UploadExistingModelChanges', function (req, res) {
     // Extract parameters from request body
-    const { model_instance_id, date_and_time, position, scale, rotation } = req.body;
+    const { model_instance_id, file_modified_url, date_and_time, position, scale, rotation } = req.body;
     console.log(position);
     // Connect to the database
     sql.connect(config, function (err) {
@@ -147,7 +147,7 @@ app.post('/api/UploadExistingModelChanges', function (req, res) {
         }
 
         // Execute the stored procedure
-        const statement = `EXEC uspInsertOrUpdateContentChanges @p_model_instance_id=${model_instance_id}, @p_date_and_time='${date_and_time}', @p_position='${position}', @p_scale='${scale}', @p_rotation='${rotation}'`;
+        const statement = `EXEC uspInsertOrUpdateContentChanges @p_model_instance_id=${model_instance_id}, @p_file_modified_url='${file_modified_url}', @p_date_and_time='${date_and_time}', @p_position='${position}', @p_scale='${scale}', @p_rotation='${rotation}'`;
         console.log(statement);
         // Execute the stored procedure
         new sql.Request().query(statement, function (err) {
@@ -185,8 +185,6 @@ app.post('/api/UploadNewModelChanges', function (req, res) {
             @p_scale = '${scale}', 
             @p_rotation = '${rotation}'
         `;
-
-
 
         // Execute the query
         pool.request().query(query, function (err, recordset) {

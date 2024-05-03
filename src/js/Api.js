@@ -1,4 +1,4 @@
-// GetScene.js
+// Api.js
 import axios from "axios";
 
 const GetModels = async (scene_id, scene_date) => {
@@ -33,11 +33,12 @@ const GetDates = async (scene_id) => {
     return response;
 };
 
-const UploadExistingModelChanges = async (model_instance_id, date_and_time, position, scale, rotation) => {
+const UploadExistingModelChanges = async (model_instance_id, file_modified_url, date_and_time, position, scale, rotation) => {
     try {
         // Make a POST request to the server
         const response = await axios.post('http://localhost:2023/api/UploadExistingModelChanges', {
             model_instance_id: model_instance_id,
+            file_modified_url: file_modified_url,
             date_and_time: date_and_time,
             position: position,
             scale: scale,

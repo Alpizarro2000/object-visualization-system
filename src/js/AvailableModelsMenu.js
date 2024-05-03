@@ -4,12 +4,11 @@ import 'aframe';
 import ApiTools from './Api';
 import '../css/gui-tool-styles.css';
 
-const AvailableModelsMenu = () => {
+const AvailableModelsMenu = ({ modelsRef }) => {
     const [buttons, setButtons] = useState('');
-    const [dataLoaded, setDataLoaded] = useState('');
+    const [dataLoaded, setDataLoaded] = useState(false);
 
     useEffect(() => {
-        // Call GetScene and handle the response using async/await
         async function fetchData() {
             try {
                 const response = await ApiTools.GetFiles();
@@ -18,15 +17,17 @@ const AvailableModelsMenu = () => {
                     if (data === "") {
                         console.log("No models found");
                     } else {
-                        // Map over data and create buttons directly
                         const buttons = data.map((item) => (
-                            <button id={`modelSpawn${item.file_id}`} key={`SpawnFile${item.file_id}`} onClick={() => SpawnModel(item)}>
+                            <button
+                                id={`modelSpawn${item.file_id}`}
+                                key={`SpawnFile${item.file_id}`}
+                                onClick={() => SpawnModel(item, modelsRef)}
+                            >
                                 Spawn {item.file_name}
                             </button>
                         ));
-                        // Set the state contents with the mapped models
                         setButtons(buttons);
-                        setDataLoaded(true); // Set dataLoaded to true after contents have been updated
+                        setDataLoaded(true);
                     }
                 } else {
                     console.log("response.status = " + response.status);
@@ -36,32 +37,32 @@ const AvailableModelsMenu = () => {
             }
         }
 
-        fetchData();
-    }, []); // Empty dependency array to run only once on mount
+        if (!dataLoaded) {
+            fetchData();
+        }
+    }, [dataLoaded, modelsRef]);
 
-    // Spawn model function
     function SpawnModel(modelData) {
-        const sceneEl = document.querySelector('a-scene');
-        if (sceneEl) {
-            const player = sceneEl.camera.el;
+        const sceneLayout = document.querySelector('a-scene');
+        if (sceneLayout) {
+            const player = sceneLayout.camera.el;
             const position = player.getAttribute('position');
 
             const entity = document.createElement('a-entity');
             entity.setAttribute('class', `nModel`);
             entity.setAttribute('gltf-model', `url(${modelData.file_url})`);
             entity.setAttribute('position', position);
-            entity.setAttribute('scale', "0.01 0.01 0.01");
+            entity.setAttribute('scale', "0.001 0.001 0.001");
             entity.setAttribute('rotation', "0 0 0");
-
-            sceneEl.appendChild(entity);
+    
+            sceneLayout.appendChild(entity);
         }
-    } 
+    }
 
-    // Return RenderEntities only after contents have been updated
     return (
         dataLoaded && 
         <>
-        <div grabbable="true" className="spawner__menu">{buttons}</div>
+            <div className="menu spawner__menu">{buttons}</div>
         </>
     );
 }
