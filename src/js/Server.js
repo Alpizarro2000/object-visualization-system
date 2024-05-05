@@ -138,7 +138,6 @@ app.get('/api/files', function (req, res) {
 app.post('/api/UploadExistingModelChanges', function (req, res) {
     // Extract parameters from request body
     const { model_instance_id, file_modified_url, date_and_time, position, scale, rotation } = req.body;
-    console.log(position);
     // Connect to the database
     sql.connect(config, function (err) {
         if (err) {
@@ -147,8 +146,15 @@ app.post('/api/UploadExistingModelChanges', function (req, res) {
         }
 
         // Execute the stored procedure
-        const statement = `EXEC uspInsertOrUpdateContentChanges @p_model_instance_id=${model_instance_id}, @p_file_modified_url='${file_modified_url}', @p_date_and_time='${date_and_time}', @p_position='${position}', @p_scale='${scale}', @p_rotation='${rotation}'`;
-        console.log(statement);
+        const statement = `
+            EXEC uspInsertOrUpdateContentChanges 
+            @p_model_instance_id=${model_instance_id}, 
+            @p_file_modified_url='${file_modified_url}', 
+            @p_date_and_time='${date_and_time}', 
+            @p_position='${position}', 
+            @p_scale='${scale}', 
+            @p_rotation='${rotation}'
+        `;
         // Execute the stored procedure
         new sql.Request().query(statement, function (err) {
             if (err) {
@@ -176,7 +182,7 @@ app.post('/api/UploadNewModelChanges', function (req, res) {
         }
 
         // Create SQL query string with parameter values
-        const query = `
+        const statement = `
             EXEC uspInsertNewModelInstanceAndChange 
             @p_scene_id = ${scene_id}, 
             @p_file_modified_url = '${file_modified_url}', 
@@ -187,7 +193,7 @@ app.post('/api/UploadNewModelChanges', function (req, res) {
         `;
 
         // Execute the query
-        pool.request().query(query, function (err, recordset) {
+        pool.request().query(statement, function (err, recordset) {
             if (err) {
                 console.log(err);
                 return res.status(500).send('Error executing database query');
@@ -218,22 +224,16 @@ app.post('/api/CreateScene/:scene_name', function (req, res) {
         request.input('scene_name', sql.NVarChar(255), scene_name);
 
         // Execute the stored procedure
-        request.execute('uspCreateScene', function (err, recordset) {
+        request.execute('uspCreateScene', function (err, recordsets) {
             if (err) {
                 console.log(err);
                 return res.status(500).send('Error executing database query');
             }
 
-            // Check if the procedure returned a message
-            if (recordset && recordset.recordset && recordset.recordset[0] && recordset.recordset[0].Message) {
-                const message = recordset.recordset[0].Message;
-                return res.send(message);
-            }
-
-            // Return success message
-            res.send('Scene created successfully');
+            res.send(recordsets.recordset);
         });
     });
 });
+
 
 app.listen(2023, () => console.log("Listening on port "));

@@ -1,3 +1,17 @@
+.scene__title {
+    color: white;
+    background-color:rgb(46, 46, 46);
+    font-size: 17px;
+    text-align: center;
+
+    width: 100%;
+
+    position: fixed;
+    z-index: 1000;
+
+    padding: 5px 0px;
+}
+
 div.menu, div.popup {
     background-color: rgb(27, 27, 27);
 
@@ -13,6 +27,22 @@ div.menu, div.popup {
     padding-right: 8px;
     border-width: 10px;
     border-radius: 10px;    
+}
+
+div.spawner__menu {
+    height: 300px;
+    width: 250px;
+
+    top: 50px;
+    left: 10px;
+}
+
+div.dates__menu {
+    height: 300px;
+    width: 220px;
+
+    top: 50px;
+    right: 10px;
 }
 
 div.scenes__menu {
@@ -34,6 +64,29 @@ div.popup {
 .THE__button {
     color: white;
     background-color: rgb(63, 63, 63);
+}
+
+.THE__button:hover {
+    color: white;
+    background-color: rgb(84, 84, 84);
+}
+
+.THE__button:active {
+    color: white;
+    background-color: rgb(55, 55, 55);
+}
+
+.save__button {
+    background-image: url('../assets/save.png');
+    background-size: cover;
+    height: 30px;
+    width: 30px;
+    padding: 5px 10px;
+    z-index: 1000;
+    position: absolute;
+    border-radius: 3px;
+    top: 680px;
+    left: 300px;
 }
 
 div.popup p {
@@ -73,23 +126,6 @@ div.popup__content.popup__popup__buttons_and_form {
    justify-content: center;
 }
 
-div.spawner__menu {
-    height: 300px;
-    width: 250px;
-
-    top: 30px;
-    left: 10px;
-}
-
-
-div.dates__menu {
-    height: 300px;
-    width: 250px;
-
-    top: 30px;
-    right: 10px;
-}
-
 button {
     background-color: white;
     font-size: 16px;
@@ -102,6 +138,10 @@ button {
     border-radius: 10px;
 
     cursor: pointer;
+}
+
+.dates-main-btn {
+    padding: 10px !important;
 }
 
 button:hover {

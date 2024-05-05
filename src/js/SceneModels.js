@@ -1,5 +1,4 @@
-// SceneModels.js
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import 'aframe';
 import ApiTools from './Api';
 import ReturnModel from './ReturnModel';
@@ -8,7 +7,6 @@ import AvailableModelsMenu from './AvailableModelsMenu';
 const SceneModels = ({ sceneId, sceneDate }) => {
     const [contents, setContents] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
-    const modelsRef = useRef(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -33,25 +31,12 @@ const SceneModels = ({ sceneId, sceneDate }) => {
         fetchData();
     }, [sceneId, sceneDate]);
 
-    // Update modelsRef when contents change
-    useEffect(() => {
-        // Set modelsRef to the first child element of the AvailableModelsMenu component
-        if (modelsRef.current === null) {
-            const firstChild = document.querySelector('a-scene');
-            if (firstChild) {
-                modelsRef.current = firstChild;
-            }
-        }
-    }, [contents]);
-
     return (
-        dataLoaded && 
         <>
-            <AvailableModelsMenu modelsRef={modelsRef} />
+            {dataLoaded && <AvailableModelsMenu/>}
             {contents}
         </>
     );
 }
 
 export default SceneModels;
-

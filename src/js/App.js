@@ -7,6 +7,7 @@ import ApiTools from './Api'; // Import axios functions from GetScene.js
 
 export function App() {
   const [selectedSceneId, setSelectedSceneId] = useState(null); // State to store the selected scene ID
+  const [saveWasTriggered, setSaveAsTriggered] = useState(false); // State to trigger saving
   const sceneRef = useRef(null);
 
 
@@ -58,43 +59,51 @@ export function App() {
         entity.removeAttribute('class', 'nModel');
       }
     }
+    setSaveAsTriggered(!saveWasTriggered);
+    setSaveAsTriggered(!saveWasTriggered);
   };
 
   useEffect(() => {
-    const sceneEl = sceneRef.current;
-    if (sceneEl) {
-      sceneEl.addEventListener('loaded', () => {
-        const enterVRButton = document.createElement('button');
-        enterVRButton.textContent = 'Enter VR';
-        enterVRButton.style.position = 'fixed';
-        enterVRButton.style.bottom = '20px';
-        enterVRButton.style.right = '20px';
-        enterVRButton.style.padding = '12px 24px';
-        enterVRButton.style.fontSize = '16px';
-        enterVRButton.style.color = 'white';
-        enterVRButton.style.background = 'rgba(0,0,0,0.8)';
-        enterVRButton.style.border = 'none';
-        enterVRButton.style.borderRadius = '4px';
-        enterVRButton.style.cursor = 'pointer';
-        enterVRButton.addEventListener('click', () => {
-          sceneEl.enterVR();
-        });
+  const sceneEl = sceneRef.current;
+  if (sceneEl) {
+    const enterVRButton = document.createElement('button');
+    enterVRButton.textContent = 'Enter VR';
+    enterVRButton.style.position = 'fixed';
+    enterVRButton.style.bottom = '20px';
+    enterVRButton.style.right = '20px';
+    enterVRButton.style.padding = '12px 24px';
+    enterVRButton.style.fontSize = '16px';
+    enterVRButton.style.color = 'white';
+    enterVRButton.style.background = 'rgba(0,0,0,0.8)';
+    enterVRButton.style.border = 'none';
+    enterVRButton.style.borderRadius = '4px';
+    enterVRButton.style.cursor = 'pointer';
+    enterVRButton.addEventListener('click', () => {
+      sceneEl.enterVR();
+    });
 
-        document.body.appendChild(enterVRButton);
-      });
-    }
-  }, []);
+    document.body.appendChild(enterVRButton);
+
+    // Cleanup function to remove the button when component unmounts
+    return () => {
+      document.body.removeChild(enterVRButton);
+    };
+  }
+}, []);
 
   return (
     <>
-    <a-scene vr-mode-ui="enabled: true">
+    <a-scene vr-mode-ui="enabled: true" ref={sceneRef}>
       <a-light type="ambient" color="#888"></a-light>
       <a-light type="directional" color="#fff" intensity="0.5" position="-1 1 -1"></a-light>
       <a-camera position="0 1.6 0" />
-      <div className="scene__title">Untitled</div>
-      <ScenesMenu onSceneSelection={setSelectedSceneId} /> {/* Pass setSelectedSceneId to ScenesMenu */}
+      <ScenesMenu 
+        onSceneSelection={setSelectedSceneId}
+        triggerSave={handleSave}
+        setSaveAsTriggered={saveWasTriggered}
+      /> {/* Pass setSelectedSceneId to ScenesMenu */}
       <KeyboardShortcut onUndo={handleUndo} onSave={handleSave} />
-      <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" scale="10 10 0" color="green" />
+      <a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" scale="10 10 0" color="#69615b"/>
       <a-sky color="lightblue" />
     </a-scene>
     </>

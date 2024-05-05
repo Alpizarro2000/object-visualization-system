@@ -4,7 +4,7 @@ import 'aframe';
 import ApiTools from './Api';
 import '../css/gui-tool-styles.css';
 
-const AvailableModelsMenu = ({ modelsRef }) => {
+const AvailableModelsMenu = () => {
     const [buttons, setButtons] = useState('');
     const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -21,7 +21,7 @@ const AvailableModelsMenu = ({ modelsRef }) => {
                             <button
                                 id={`modelSpawn${item.file_id}`}
                                 key={`SpawnFile${item.file_id}`}
-                                onClick={() => SpawnModel(item, modelsRef)}
+                                onClick={() => SpawnModel(item)}
                             >
                                 Spawn {item.file_name}
                             </button>
@@ -40,7 +40,7 @@ const AvailableModelsMenu = ({ modelsRef }) => {
         if (!dataLoaded) {
             fetchData();
         }
-    }, [dataLoaded, modelsRef]);
+    }, [dataLoaded]);
 
     function SpawnModel(modelData) {
         const sceneLayout = document.querySelector('a-scene');
