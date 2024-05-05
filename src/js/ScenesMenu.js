@@ -1,10 +1,10 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect } from "react";
 import 'aframe';
 import DatesMenu from './DatesMenu';
 import ReturnSceneTitle from './ReturnSceneTitle';
 import SceneModels from "./SceneModels";
 import ApiTools from './Api';
-import savePNG from "../assets/save.png";
+import AvailableModelsMenu from './AvailableModelsMenu'; // Import AvailableModelsMenu component
 import '../css/gui-tool-styles.css';
 
 const ScenesMenu = ({ onSceneSelection, triggerSave, saveWasTriggered}) => {
@@ -17,6 +17,8 @@ const ScenesMenu = ({ onSceneSelection, triggerSave, saveWasTriggered}) => {
   const [newSceneName, setNewSceneName] = useState("");
   const [creationMessage, setCreationMessage] = useState("");
   const [reloadScenes, setReloadScenes] = useState(false); // State to trigger reloading of scenes
+  const [showModelsMenu, setShowModelsMenu] = useState(false); // State to control the visibility of the models menu
+  const [showWarning, setShowWarning] = useState(false); // State to control the visibility of the warning text
 
   useEffect(() => {
     async function fetchData() {
@@ -43,10 +45,14 @@ const ScenesMenu = ({ onSceneSelection, triggerSave, saveWasTriggered}) => {
 
   function handleSceneSelection(sceneId, sceneName) {
     setCurrentSceneName(sceneName);
-
     setSelectedScene(sceneId);
     setSelectedDate('latest');
     onSceneSelection(sceneId);
+  
+    // Preserve showModelsMenu state if it was true before the scene change
+    if (!showModelsMenu) {
+      setShowModelsMenu(false);
+    }
   }
   
   function handleSelectDate(date) {
@@ -68,9 +74,10 @@ const ScenesMenu = ({ onSceneSelection, triggerSave, saveWasTriggered}) => {
 
   async function handleGenerateScene(event) {
     event.preventDefault();
+    
     try {
       const response = await ApiTools.CreateScene(newSceneName)
-      setCreationMessage(response[0].message); // Access the message from the response
+      setCreationMessage(response[0].message); 
       if (response[0].message === "Scene created successfully.") {
         setShowCreateScenePopup(false);
         setReloadScenes(!reloadScenes); // Toggle reloadScenes to trigger reload
@@ -79,9 +86,13 @@ const ScenesMenu = ({ onSceneSelection, triggerSave, saveWasTriggered}) => {
         handleSceneSelection(new_scene_id, newSceneName);
         setNewSceneName("");
       }
+      else {
+        console.log(response[0].message);
+      }
     } catch (error) {
       console.error("Error creating scene:", error);
     }
+    console.log(creationMessage);
   }  
 
   useEffect(() => {
@@ -95,6 +106,11 @@ const ScenesMenu = ({ onSceneSelection, triggerSave, saveWasTriggered}) => {
       cleanupScene(); // Remove all a-entities when a new scene is selected
     }
   }, [selectedScene]);
+
+  // Toggle warning text based on whether the scene is untitled and models menu is toggled
+  useEffect(() => {
+    setShowWarning(currentSceneName === 'Untitled' && showModelsMenu);
+  }, [currentSceneName, showModelsMenu]);
 
   const errorMessageClass = creationMessage.startsWith("Name is already taken.") ? "errorMessage" : "";
   const successMessageClass = creationMessage.trim() === "Scene created successfully" ? "successMessage" : "";
@@ -111,21 +127,26 @@ const ScenesMenu = ({ onSceneSelection, triggerSave, saveWasTriggered}) => {
           </button>
         ))}
       </div>
-      <button className="save__button" onClick={triggerSave}></button> {/* Call triggerSave when save button is clicked */}
+      <div className="ribbon__menu menu">
+        <button className={`save__button ${showModelsMenu}`} onClick={triggerSave}></button>
+        <button className={`models__button ${showModelsMenu ? 'models__button--active' : ''}`} onClick={() => setShowModelsMenu(!showModelsMenu)}></button>
+      </div>
+
+      {showModelsMenu && <AvailableModelsMenu showModelsMenu={showModelsMenu}/>} {/* Render AvailableModelsMenu when showModelsMenu is true and no scene is selected */}
       {selectedScene && <SceneModels key={selectedScene} sceneId={selectedScene} sceneDate={selectedDate} />}
       {selectedScene && selectedDate && dataLoaded && <DatesMenu key={selectedDate} sceneId={selectedScene} onSelectDate={handleSelectDate} saveWasTriggered={saveWasTriggered}/>}
       
       {/* Create Scene Popup */}
       {showCreateScenePopup && (
-        <div className="popup">
+        <div className="popup__overlay">
           <div className="popup__content">
-            <h2>Create Scene</h2>
             <div className="popup__buttons_and_form">
+              <h2>Create Scene</h2>
               <form onSubmit={handleGenerateScene}>
-                <label>
+                <label style={{ marginRight: '10px' }}>
                   Scene name:
-                  <input type="text" value={newSceneName} onChange={handleSceneNameChange} />
                 </label>
+                <input type="text" value={newSceneName} onChange={handleSceneNameChange} />
                 <div className="formButtons">
                   <button type="submit">Generate</button>
                   <button type="button" onClick={handleClosePopup}>Cancel</button>
@@ -136,10 +157,15 @@ const ScenesMenu = ({ onSceneSelection, triggerSave, saveWasTriggered}) => {
           </div>
         </div>
       )}
+
+      {/* Warning text for untitled scene and models menu toggled */}
+      {showWarning && (
+        <div className={`warning-text ${showWarning ? 'slide-in' : ''}`}>
+          <p>Warning: models spawned in an untitled scene will be removed on scene creation/change. Please create a scene.</p>
+        </div>
+      )}
     </>
   );
 }
-
-const MemoizedDatesMenu = memo(DatesMenu);
 
 export default ScenesMenu;

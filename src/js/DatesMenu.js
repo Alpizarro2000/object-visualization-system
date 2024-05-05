@@ -6,15 +6,49 @@ const DatesMenu = React.memo(({ sceneId, onSelectDate, saveWasTriggered }) => {
   const [loading, setLoading] = useState(false);
   const [datesExist, setDatesExist] = useState(false); // State to track if dates exist for the scene
   const [dropdownVisible, setDropdownVisible] = useState(false); // State to manage dropdown visibility
+  const [buttonHeight, setButtonHeight] = useState(0); // State to store the height of a single button
+  const maxButtonsToShow = 5; // Maximum number of buttons to display in the dropdown
 
   // Define the shared button styles
   const buttonStyles = {
-    padding: '8px',
-    margin: '5px',
+    fontSize: '14px',
+    color: 'white',
+    backgroundColor: 'rgb(27, 27, 27)',
+    padding: '10px 4px',
+    margin: '3px',
     display: 'block',
-    width: '190px',
-    height: '40px'
+    width: '170px',
+    height: '40px',
+    transition: 'background-color 0.3s, transform 0.3s', // Add transition for smooth animation
   };
+
+  const hoverStyles = {
+     // Add scale effect on hover
+  };
+
+  useEffect(() => {
+    // Calculate the height of a single button including margin and padding
+    const tempButton = document.createElement('button');
+    tempButton.style.cssText = `
+      ${buttonStyles.padding};
+      ${buttonStyles.margin};
+      ${buttonStyles.width};
+      ${buttonStyles.height};
+      position: absolute;
+      visibility: hidden;
+    `;
+    tempButton.innerText = 'Temp';
+    document.body.appendChild(tempButton);
+    const tempButtonHeight = tempButton.offsetHeight;
+    const tempButtonStyle = window.getComputedStyle(tempButton);
+    const tempButtonMarginTop = parseInt(tempButtonStyle.marginTop);
+    const tempButtonMarginBottom = parseInt(tempButtonStyle.marginBottom);
+    const tempButtonPaddingTop = parseInt(tempButtonStyle.paddingTop);
+    const tempButtonPaddingBottom = parseInt(tempButtonStyle.paddingBottom);
+    const totalButtonHeight = tempButtonHeight + tempButtonMarginTop + tempButtonMarginBottom + tempButtonPaddingTop + tempButtonPaddingBottom;
+    document.body.removeChild(tempButton);
+    setButtonHeight(totalButtonHeight);
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -28,7 +62,7 @@ const DatesMenu = React.memo(({ sceneId, onSelectDate, saveWasTriggered }) => {
             setDatesExist(false); // Set datesExist to false if there are no dates
           } else {
             const newDateButtons = data.map((item, index) => (
-              <button key={item.date_and_time} onClick={() => onSelectDate(item.date_and_time)} style={buttonStyles}>
+              <button className="date__buttons" key={item.date_and_time} onClick={() => onSelectDate(item.date_and_time)} style={buttonStyles}>
                 {formatDate(item.date_and_time)}
               </button>
             ));
@@ -59,6 +93,9 @@ const DatesMenu = React.memo(({ sceneId, onSelectDate, saveWasTriggered }) => {
     setDropdownVisible(!dropdownVisible);
   };
 
+  // Calculate the maximum height of the dropdown menu based on the number of buttons to display
+  const maxDropdownHeight = buttonHeight * maxButtonsToShow;
+
   // Conditionally render the DatesMenu based on whether dates exist
   if (!datesExist) {
     return null;
@@ -69,7 +106,7 @@ const DatesMenu = React.memo(({ sceneId, onSelectDate, saveWasTriggered }) => {
       <button className="dates-main-btn" style={buttonStyles} onClick={toggleDropdown}>
         {formatDate(dateButtons[0].key)} {/* Display the date from the first button */}
       </button>
-      <div className="dates-dropdown-content" style={{ display: dropdownVisible ? 'block' : 'none' }}>
+      <div className="dates-dropdown-content" style={{ opacity: dropdownVisible ? 1 : 0, maxHeight: dropdownVisible ? `${maxDropdownHeight}px` : 0, overflow: 'hidden', transition: 'max-height 0.25s, opacity 0.25s', overflowY: 'auto' }}>
         {loading ? ( // Display loading indicator if data is being fetched
           <p>Loading...</p>
         ) : (

@@ -155,6 +155,8 @@ app.post('/api/UploadExistingModelChanges', function (req, res) {
             @p_scale='${scale}', 
             @p_rotation='${rotation}'
         `;
+        console.log(statement);
+
         // Execute the stored procedure
         new sql.Request().query(statement, function (err) {
             if (err) {
@@ -191,6 +193,7 @@ app.post('/api/UploadNewModelChanges', function (req, res) {
             @p_scale = '${scale}', 
             @p_rotation = '${rotation}'
         `;
+        console.log(statement);
 
         // Execute the query
         pool.request().query(statement, function (err, recordset) {

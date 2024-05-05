@@ -4,7 +4,7 @@ import 'aframe';
 import ApiTools from './Api';
 import '../css/gui-tool-styles.css';
 
-const AvailableModelsMenu = () => {
+const AvailableModelsMenu = ({ showModelsMenu }) => {
     const [buttons, setButtons] = useState('');
     const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -20,10 +20,11 @@ const AvailableModelsMenu = () => {
                         const buttons = data.map((item) => (
                             <button
                                 id={`modelSpawn${item.file_id}`}
+                                className="modelSpawner button"
                                 key={`SpawnFile${item.file_id}`}
                                 onClick={() => SpawnModel(item)}
                             >
-                                Spawn {item.file_name}
+                                {item.file_name}
                             </button>
                         ));
                         setButtons(buttons);
@@ -40,7 +41,7 @@ const AvailableModelsMenu = () => {
         if (!dataLoaded) {
             fetchData();
         }
-    }, [dataLoaded]);
+    }, [dataLoaded, showModelsMenu]);
 
     function SpawnModel(modelData) {
         const sceneLayout = document.querySelector('a-scene');
@@ -59,6 +60,10 @@ const AvailableModelsMenu = () => {
         }
     }
 
+    if (!showModelsMenu) {
+        return null; // If showModelsMenu is false, don't render anything
+    }
+    
     return (
         dataLoaded && 
         <>
