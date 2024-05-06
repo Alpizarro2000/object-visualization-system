@@ -92,7 +92,6 @@ const ScenesMenu = ({ onSceneSelection, triggerSave, saveWasTriggered}) => {
     } catch (error) {
       console.error("Error creating scene:", error);
     }
-    console.log(creationMessage);
   }  
 
   useEffect(() => {

@@ -1,12 +1,14 @@
-// AvailableModelsMenu.js
 import React, { useState, useEffect } from "react";
 import 'aframe';
 import ApiTools from './Api';
 import '../css/gui-tool-styles.css';
 
 const AvailableModelsMenu = ({ showModelsMenu }) => {
-    const [buttons, setButtons] = useState('');
+    const [buttons, setButtons] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
+    const [selectedModel, setSelectedModel] = useState(null);
+    const [rotation, setRotation] = useState("0 0 0");
+    const [scale, setScale] = useState("0.001 0.001 0.001");
 
     useEffect(() => {
         async function fetchData() {
@@ -22,7 +24,7 @@ const AvailableModelsMenu = ({ showModelsMenu }) => {
                                 id={`modelSpawn${item.file_id}`}
                                 className="modelSpawner button"
                                 key={`SpawnFile${item.file_id}`}
-                                onClick={() => SpawnModel(item)}
+                                onClick={() => setSelectedModel(item)}
                             >
                                 {item.file_name}
                             </button>
@@ -43,7 +45,9 @@ const AvailableModelsMenu = ({ showModelsMenu }) => {
         }
     }, [dataLoaded, showModelsMenu]);
 
-    function SpawnModel(modelData) {
+    function handleSpawnModel() {
+        if (!selectedModel) return;
+
         const sceneLayout = document.querySelector('a-scene');
         if (sceneLayout) {
             const player = sceneLayout.camera.el;
@@ -51,24 +55,63 @@ const AvailableModelsMenu = ({ showModelsMenu }) => {
 
             const entity = document.createElement('a-entity');
             entity.setAttribute('class', `nModel`);
-            entity.setAttribute('gltf-model', `url(${modelData.file_url})`);
+            entity.setAttribute('gltf-model', `url(${selectedModel.file_url})`);
             entity.setAttribute('position', position);
-            entity.setAttribute('scale', "0.001 0.001 0.001");
-            entity.setAttribute('rotation', "0 0 0");
-    
+            entity.setAttribute('scale', scale);
+            entity.setAttribute('rotation', rotation);
+
             sceneLayout.appendChild(entity);
         }
+
+        // Reset selected model and form values after spawning
+        setSelectedModel(null);
+        setRotation("0 0 0");
+        setScale("0.001 0.001 0.001");
+    }
+
+    function handleCancel() {
+        // Reset selected model and form values on cancel
+        setSelectedModel(null);
+        setRotation("0 0 0");
+        setScale("0.001 0.001 0.001");
+    }
+
+    function handleChangeRotation(event) {
+        setRotation(event.target.value);
+    }
+
+    function handleChangeScale(event) {
+        setScale(event.target.value);
     }
 
     if (!showModelsMenu) {
         return null; // If showModelsMenu is false, don't render anything
     }
-    
+
+    if (selectedModel) {
+        return (
+            <div className="menu spawner__menu something_else">
+                <h2>Spawn {selectedModel.file_name}</h2>
+                <form className="rotationAndScale">
+                    <label>
+                        Rotation:
+                        <input type="text" value={rotation} onChange={handleChangeRotation} />
+                    </label>
+                    <label>
+                        Scale:
+                        <input type="text" value={scale} onChange={handleChangeScale} />
+                    </label>
+                    <button onClick={handleSpawnModel}>Spawn</button>
+                    <button onClick={handleCancel}>Cancel</button>
+                </form>
+            </div>
+        );
+    }
+
     return (
-        dataLoaded && 
-        <>
-            <div className="menu spawner__menu">{buttons}</div>
-        </>
+        <div className="menu spawner__menu">
+            {buttons}
+        </div>
     );
 }
 

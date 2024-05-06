@@ -36,6 +36,13 @@
     bottom: 20px; /* Move it into view */
   }
   
+.something_else {
+    color: white;
+}
+
+.something_else button{
+    padding: 5px 15px;
+}
 
 div.menu, div.popup {
     background-color: rgb(27, 27, 27);

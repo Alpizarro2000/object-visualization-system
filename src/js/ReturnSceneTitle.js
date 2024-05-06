@@ -1,7 +1,5 @@
 // ReturnSceneTitle.js
 export function ReturnSceneTitle(scene_name) {
-    console.log(scene_name);
-
     if (scene_name === "Untitled") {
         return(
             <div className="scene__title" style={{fontStyle: 'italic'}}>
