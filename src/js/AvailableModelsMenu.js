@@ -54,7 +54,7 @@ const AvailableModelsMenu = ({ showModelsMenu }) => {
             const position = player.getAttribute('position');
 
             const entity = document.createElement('a-entity');
-            entity.setAttribute('class', `nModel`);
+            entity.setAttribute('class', `nModel grabbable`);
             entity.setAttribute('gltf-model', `url(${selectedModel.file_url})`);
             entity.setAttribute('position', position);
             entity.setAttribute('scale', scale);
