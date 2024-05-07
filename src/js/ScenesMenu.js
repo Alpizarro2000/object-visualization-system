@@ -97,7 +97,7 @@ const ScenesMenu = ({ onSceneSelection, triggerSave, saveWasTriggered}) => {
   useEffect(() => {
     // Cleanup function to remove all a-entities when a new scene is selected
     function cleanupScene() {
-      const entities = document.querySelectorAll('a-entity');
+      const entities = document.querySelectorAll('a-entity:not(#leftHand):not(#rightHand)');
       entities.forEach(entity => entity.parentNode.removeChild(entity));
     }
 

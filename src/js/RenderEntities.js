@@ -6,6 +6,7 @@ function RenderEntities({ entities, entityRefs }) {
   // Map over the array of entities and generate <a-entity> elements for each object
   const renderedEntities = entities.map((entity, index) => (
     <a-entity
+      class="grabbable"
       key={index}
       ref={el => entityRefs.current[index] = el} // Add a ref to each a-entity element
       gltf-model={entity.props && entity.props['gltf-model']}
