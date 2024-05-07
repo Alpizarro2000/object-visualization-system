@@ -1,14 +1,38 @@
+@import url(https://fonts.googleapis.com/css?family=Varela+Round);
+
 * {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  }
+
+.page__title {
+    color: hsla(0, 0%, 0%, 0.9);
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 5px;
+    position: fixed;
+    top: 7px;
+    right: 50px;
+    z-index: 1001;
+    animation: move linear 2000ms infinite;
+    text-transform: uppercase;
 }
 
 .scene__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 30px;
-    color: white;
-    background-color:rgb(46, 46, 46);
+    color: rgb(0, 0, 0);
+    background-color:rgb(255, 255, 255);
     font-size: 17px;
     text-align: center;
-
+    border: 2px solid white; /* White outer border */
+    box-shadow: 
+      0 0 0 2px white, /* White outer border */
+      0 0 0 4px black;
     width: 100%;
 
     position: fixed;
@@ -16,6 +40,34 @@
 
     padding: 5px 0px;
 }
+
+@keyframes move {
+    0% {
+      text-shadow:
+        2px -2px 0 hsla(0, 100%, 50%, 1),
+        -2px 2px 0 hsla(180, 100%, 50%, 1);
+    }
+    25% {
+      text-shadow:
+        -2px -2px 0 hsla(180, 100%, 50%, 1),
+        2px 2px 0 hsla(0, 100%, 50%, 1);
+    }
+    50% {
+      text-shadow:
+        -2px 2px 0 hsla(0, 100%, 50%, 1),
+        2px -2px 0 hsla(180, 100%, 50%, 1);
+    }
+    75% {
+      text-shadow:
+        2px 2px 0 hsla(180, 100%, 50%, 1),
+        -2px -2px 0 hsla(0, 100%, 50%, 1);
+    }
+    100% {
+      text-shadow:
+        2px -2px 0 hsla(0, 100%, 50%, 1),
+        -2px 2px 0 hsla(180, 100%, 50%, 1);
+    }
+  }
 
 .warning-text {
     position: fixed;
@@ -37,7 +89,7 @@
   }
   
 .something_else {
-    color: white;
+    color: rgb(0, 0, 0);
 }
 
 .something_else button{
@@ -45,7 +97,7 @@
 }
 
 div.menu, div.popup {
-    background-color: rgb(27, 27, 27);
+    background-color: rgb(255, 255, 255);
 
     position: fixed;
     z-index: 1000;
@@ -54,7 +106,7 @@ div.menu, div.popup {
     display: flex;
     flex-direction: column;
 
-    border-color: rgb(27, 27, 27);
+    border-color: rgb(255, 255, 255);
     border-style: solid;
     padding-right: 8px;
     border-width: 10px;
@@ -70,6 +122,7 @@ div.spawner__menu {
 }
 
 div.dates__menu {
+    background-color: white;
     top: 50px;
     right: 10px;
 }
@@ -92,12 +145,11 @@ div.popup {
 
 .THE__button {
     color: white;
-    background-color: rgb(63, 63, 63);
+    background-color: hsl(350, 62%, 51%) !important;
 }
 
 .THE__button:hover {
-    color: white;
-    background-color: rgb(84, 84, 84);
+    background-color: rgb(191, 48, 72) !important;
 }
 
 .THE__button:active {
@@ -107,29 +159,30 @@ div.popup {
 
 .save__button {
     background-image: url('../assets/save.svg');
-    background-size: cover;
-    height: 30px;
-    width: 30px;
-    padding: 5px 10px;
-    z-index: 1000;
-    border-radius: 3px;
-    filter: invert(0.8);
 }
 
 .models__button{
     background-image: url('../assets/entity.svg');
-    background-size: cover;
-    height: 30px;
-    width: 30px;
-    padding: 5px 10px;
-    z-index: 1000;
-    border-radius: 3px;
-    filter: invert(0.8);
 }
 
-.models__button--active {
-    background-color: lightgray; /* Change to the desired lighter shade of gray */
-  }
+.save__button,
+.models__button {
+  background-color: transparent !important;
+  background-size: cover;
+  height: 30px;
+  width: 30px;
+  padding: 5px 10px;
+  z-index: 1000;
+  border-radius: 3px;
+  border-style: none;
+  box-shadow: inset 0 0 0 0 #D80286; /* Initial shadow */
+  transition: ease-out 0.33s, background-color 0.33s; /* Add background-color transition */
+}
+
+.save__button:hover,
+.models__button:hover {
+  background-color: rgb(203, 203, 203) !important; /* Change background color on hover */
+}
 
 div.popup p {
     margin: 0px;
@@ -165,7 +218,8 @@ div.popup__content label {
 .ribbon__menu {
     display:flex !important;
     flex-direction: row !important;
-    background-color: rgb(46, 46, 46) !important;
+    background-color: rgb(255, 255, 255) !important;
+    align-items: center;
     border-style: none !important;
     height: 40px;
     width: 500px;
@@ -201,7 +255,7 @@ div.popup__content.popup__popup__buttons_and_form {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgb(27, 27, 27); /* Adjust as needed */
+    background-color: rgb(0, 0, 0); /* Adjust as needed */
     padding: 20px;
     border-radius: 5px;
     z-index: 1001; /* Ensure the popup content is on top of the overlay */
@@ -213,22 +267,19 @@ div.popup__content.popup__popup__buttons_and_form {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgb(27, 27, 27); /* Adjust the alpha value for the desired level of opacity */
+    background-color: rgb(0, 0, 0); /* Adjust the alpha value for the desired level of opacity */
   }
   
 
-button {
-    background-color: white;
-    font-size: 16px;
-
-    margin: 5px;
-    
-    padding: 10px 0px;
-    
-    border-style: none;
-    border-radius: 10px;
-
+button:not(.save__button):not(.models__button):not(.ar_button) {
+    width:100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: none;
+    background: #000;
+    color: #fff;
     cursor: pointer;
+    margin-bottom: 8px;
 }
 
 button.modelSpawner {
@@ -239,8 +290,9 @@ button.modelSpawner {
     padding-left: 30px;
 }
 
-button.modelSpawner:hover {
-   transition: 0.2s;
+button.modelSpawner:hover, .scenes__menu button:hover:not(.THE__button){
+    background-color: #eb4f4f !important;
+    transition: 0.2s;
 }
 
 .dates-main-btn {
@@ -248,35 +300,60 @@ button.modelSpawner:hover {
 }
 
 .date__buttons:hover, .dates-main-btn:hover {
-    background-color: rgb(44, 44, 44) !important
+
 }
 
-button:hover {
-    background-color: rgb(168, 168, 168);
+button:hover:not(.save__button):not(.models__button):not(.ar_button) {
+    background: #eb4f4f;
 }
 
 button:active {
     background-color: rgb(226, 226, 226);
 }
 
+.ar_button {
+    color: #FFF;
+    border: 2px solid rgb(216, 2, 134); /* Borde rosa fuerte */
+    border-radius: 0;
+    padding: 18px 36px;
+    display: inline-block;
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 0 #D80286; /* Sin sombra inicial */
+    transition: ease-out 0.33s; /* Transición para efectos de hover */
+}
+
+.ar_button:hover {
+    box-shadow: inset 400px 0 0 0 #D80286; /* Sombra desde la derecha */
+}
+
+.spawner__menu, .scenes__menu, .dates__menu {
+    border: 2px solid white; /* White outer border */
+    box-shadow: 
+      0 0 0 2px white, /* White outer border */
+      0 0 0 4px black;
+}
+
 ::-webkit-scrollbar {
-  width: 8px; /* Adjust scrollbar width as needed */
-  border-radius: 4px; /* Round the scrollbar handle */
+    width: 12px;
+    border-radius: 4px; /* Round the scrollbar handle */
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Change scrollbar track color */
-  border-radius: 4px; /* Round the scrollbar handle */
+    background: #f1f1f1;
+    border-radius: 4px; /* Round the scrollbar handle */
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888; /* Change scrollbar handle color */
-  border-radius: 4px; /* Round the scrollbar handle */
+    background: #888;
+    border-radius: 4px; /* Round the scrollbar handle */
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Change scrollbar handle color on hover */
+    background: #606060;
 }

@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import KeyboardShortcut from "./Shortcuts";
 import ScenesMenu from "./ScenesMenu";
 import ApiTools from './Api'; // Import axios functions from GetScene.js
+import '../css/gui-tool-styles.css';
 
 export function App() {
   const [selectedSceneId, setSelectedSceneId] = useState(null); // State to store the selected scene ID
@@ -286,6 +287,7 @@ AFRAME.registerComponent('interactable', {
   useEffect(() => {
     const enterARButton = document.createElement('button');
     enterARButton.textContent = 'Enter AR';
+    enterARButton.className = 'ar_button'; // Add the class name here
     enterARButton.style.position = 'fixed';
     enterARButton.style.bottom = '20px';
     enterARButton.style.right = '20px';
@@ -293,7 +295,6 @@ AFRAME.registerComponent('interactable', {
     enterARButton.style.fontSize = '16px';
     enterARButton.style.color = 'white';
     enterARButton.style.background = 'rgba(0,0,0,0.8)';
-    enterARButton.style.border = 'none';
     enterARButton.style.borderRadius = '4px';
     enterARButton.style.cursor = 'pointer';
     enterARButton.addEventListener('click', () => {
@@ -325,7 +326,7 @@ AFRAME.registerComponent('interactable', {
                 raycaster="objects: .grabbable; showLine: true"
                 pushx pullx thumbstick-rotate>
       </a-entity>
-
+      <div className="page__title">OVS</div>
       <ScenesMenu 
         onSceneSelection={setSelectedSceneId}
         triggerSave={handleSave}
