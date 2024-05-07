@@ -4,6 +4,7 @@ import 'aframe';
 export function ReturnModel(modelData) {
     return(
         <a-entity
+            class="grabbable"
             key={modelData.model_instance_id}
             id={modelData.model_instance_id}
             gltf-model={modelData.file_url}
