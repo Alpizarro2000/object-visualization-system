@@ -10,12 +10,12 @@ var sql = require("mssql");
 
 // config for your database
 var config = {
-    user: 'steve',
-    password: 'perro4000',
-    server: 'ARGO\\SQLEXPRESS', 
+    user: 'RedStoners',
+    password: 'beheadEntitlement47!',
+    server: '185.157.245.175', 
     port: 1433,
-    database: 'OVS',
-    trustServerCertificate: true,
+    database: 'RedStonersDB',
+    trustServerCertificate: true
 };
 
 app.get('/api/scenes', function (req, res) {
