@@ -5,6 +5,8 @@
 - Run `npm install`.
 - Run `node .\src\js\Server.js`. 
 - Run `npm start`.
+- 
+*Warning*: does not work alone. The SQL database is required and has not been provided.
 
 ### `npm run build`
 
